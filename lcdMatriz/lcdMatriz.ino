@@ -24,12 +24,17 @@ LiquidCrystal lcd(A0,A1,A2,A3,A4,A5);
 
 const byte ROWS = 4;
 const byte COLS = 4;
-char keys[COLS][ROWS] = {{'*','7','4','1'},
+/*char keys[COLS][ROWS] = {{'*','7','4','1'},
                          {'0','8','5','2'},   
                          {'#','9','6','3'},
-                         {'D','C','B','A'}};
-byte rowPins[ROWS] = { 5, 4, 3, 2 };
-byte colPins[COLS] = { 6, 7, 8, 9 }; 
+                         {'D','C','B','A'}};    */
+char keys[ROWS][COLS] = {{'1','2','3','A'},
+                         {'4','5','6','B'},   
+                         {'7','8','9','C'},
+                         {'*','0','#','D'}};                         
+byte rowPins[ROWS] = { 9, 8, 7, 6 };
+byte colPins[COLS] = { 5, 4, 3, 2 }; 
+
 Keypad kpd = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );
 
 byte xx[] = {
@@ -85,21 +90,22 @@ byte cora[] = {
 
 void setup(){
   lcd.begin(16, 2);
+  lcd.clear();
   lcd.createChar(0, xx);
   lcd.createChar(1, ii);
   lcd.createChar(2, mm);
   lcd.createChar(3, ee);
   lcd.createChar(4, cora);
   lcd.setCursor(0, 0);
-  lcd.print("Prueba de ");
-  lcd.setCursor(10, 0);
+  lcd.print("LCD de Xime");
+  /*lcd.setCursor(10, 0);
   lcd.write(byte(0));
   lcd.setCursor(11, 0);
   lcd.write(byte(1));
   lcd.setCursor(12, 0);
   lcd.write(byte(2));
   lcd.setCursor(13, 0);
-  lcd.write(byte(3));
+  lcd.write(byte(3));*/
   lcd.setCursor(14, 0);
   lcd.write(byte(4));
   lcd.setCursor(15, 0);
