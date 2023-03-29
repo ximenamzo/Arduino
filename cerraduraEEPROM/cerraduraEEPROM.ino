@@ -133,12 +133,13 @@ void leerSecret(){
 
 void comparaSecret(){
   delay(100);
-  secret = true;
+  secret = false;
   for(int i=0; i<8; i++){
     if(cd2[i] == cd[i]){
       secret = true;
     }else{
       secret = false;
+      break;
     }
   }
 }
@@ -276,7 +277,7 @@ void verContrasenia(){
       lcd.write(key);
       i++;
     }
-    delay(2000);
+    delay(1500);
     secret = false;
   }else if(secret == false){
     lcd.clear();
@@ -284,6 +285,7 @@ void verContrasenia(){
     lcd.print("Fallaste!!");  
     lcd.setCursor(0, 1);
     lcd.print("Menso :p");
+    delay(1500);
   }
   delay(500);
   loop();
