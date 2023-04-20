@@ -1,0 +1,8 @@
+1. 0-9
+2. 0-9999
+3. 0-9999 botón
+4. sensor con btn
+5. lcd nombre y caracter
+6. Menu btn led
+7. Keypad eeprom
+8. Cerradura
