@@ -19,39 +19,29 @@ void setup() {
   pinMode(in2, INPUT);
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
-
 }
 
 void loop() {
   signal1 = analogRead(A2);
   signal2 = analogRead(A3);
-  voltaje1 = ((signal1/1023)*5);
-  voltaje2 = ((signal2/1023)*5);
+  voltaje1 = ((signal1/1023)*5000);
+  voltaje2 = ((signal2/1023)*5000);
   Serial.println(i);
-  BT.print(voltaje1);
+  BT.print(voltaje1/10);
   BT.print(',');
-  BT.print(voltaje2);
+  BT.print(voltaje2/10);
   BT.println("\n");
   delay(100);
 
-  // LEDs
   if(BT.available()>0){
     datos = BT.readString();
     coma1 = datos.indexOf(',');
-
     indice = datos.substring(0, coma1);
     numero = datos.substring(coma1+1);
-
     led = numero.toInt();
     n = indice.toInt();
-
-    if(n==1){
-      analogWrite(led1, led);
-    }
-
-    if(n==2){
-      analogWrite(led2, led);
-    }
+    if(n==1){analogWrite(led1, led);}
+    if(n==2){analogWrite(led2, led);}
     delay(100);
   }
   i++;

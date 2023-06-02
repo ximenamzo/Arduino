@@ -1,4 +1,4 @@
-from tkinter import Tk, Frame, Button, Label, ttk, PhotoImage, Scale
+from tkinter import Tk, Frame, Button, Label, ttk, PhotoImage, Scale, messagebox
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -19,16 +19,16 @@ class Grafica(Frame):
         self.datos = 0.0
 
         self.fig, ax = plt.subplots(facecolor='#000000', dpi=100, figsize=(4,2))
-        plt.title("Graficar Datos de Arduino",color='white',size=12, family="Arial")
+        plt.title("Grafica de datos de temperatura y voltaje",color='white',size=12, family="Arial")
         # Las flechitas blancas con datos
         ax.tick_params(direction='out', length=5, width=2, colors='white', grid_color='r', grid_alpha=0.5)
         # Personalizacion de las graficas con colores magenta y verde
-        self.line, = ax.plot([], [], color="m", marker='o', linewidth=2, markersize=1, markeredgecolor='m')
+        self.line, = ax.plot([], [], color="r", marker='o', linewidth=2, markersize=1, markeredgecolor='r')
         self.line2, = ax.plot([], [], color="g", marker='o', linewidth=2, markersize=1, markeredgecolor='g')
         # En x va de 0 a 100
         plt.xlim([0, self.muestra])
         # Señales de voltaje
-        plt.ylim([-1, 6])
+        plt.ylim([-5, 100])
 
         ax.set_facecolor('#6E6D7000')
         ax.spines['bottom'].set_color('blue')
@@ -59,7 +59,16 @@ class Grafica(Frame):
         self.line.set_data(range(self.muestra), self.datos_senial_uno)
         self.line2.set_data(range(self.muestra), self.datos_senial_dos)
 
-        #return self.line, self.line2,
+        if dato1 < 10:
+            messagebox.showinfo(message="Temperatura baja.", title="Alerta")
+        elif dato1 > 100:
+            messagebox.showinfo(message="Temperatura demasiado alta.", title="Alerta")
+        # elif dato2 < 1:
+        #     messagebox.showinfo(message="Voltaje bajo.", title="Alerta")
+        # elif dato2 > 4:
+        #     messagebox.showinfo(message="Voltaje potencialmente alto.", title="Alerta")
+
+        #return self.line, self.line2
 
     def iniciar(self):
         self.ani = animation.FuncAnimation(self.fig, self.animate, frames=None, interval=100, blit=False, save_count=100)
@@ -101,17 +110,17 @@ class Grafica(Frame):
         self.canvas = FigureCanvasTkAgg(self.fig, master=frame)
         self.canvas.get_tk_widget().pack(padx=0,pady=0, expand=True, fill='both')
 
-        self.bt_graficar = Button(frame4, text="Graficar Datos", font=('Arial',12,'bold'), width=12, bg='purple4', fg='white', command=self.iniciar)
+        self.bt_graficar = Button(frame4, text="Graficar Datos", font=('Arial',12,'bold'), width=12, bg='turquoise4', fg='white', command=self.iniciar)
         self.bt_graficar.pack(pady=5, expand=1)
 
-        self.bt_pausar = Button(frame4, state='disabled', text="Pausar", font=('Arial', 12, 'bold'), width=12, bg='salmon', fg='white', command=self.pausar)
+        self.bt_pausar = Button(frame4, state='disabled', text="Pausar", font=('Arial', 12, 'bold'), width=12, bg='chartreuse3', fg='white', command=self.pausar)
         self.bt_pausar.pack(pady=5, expand=1)
 
-        self.bt_reanudar = Button(frame4, state='disabled', text="Reanudar", font=('Arial', 12, 'bold'), width=12, bg='green', fg='white', command=self.reanudar)
+        self.bt_reanudar = Button(frame4, state='disabled', text="Reanudar", font=('Arial', 12, 'bold'), width=12, bg='DeepPink3', fg='white', command=self.reanudar)
         self.bt_reanudar.pack(pady=5, expand=1)
 
         self.logo = PhotoImage(file='logo1.png')
-        Label(frame2, text='Control Analogico', font=('Arial', 15), bg='black', fg='white').pack(padx=5, expand=1)
+        Label(frame2, text='Control Analogico de Leds', font=('Arial', 15), bg='black', fg='white').pack(padx=5, expand=1)
         # Asignando estilos
         style = ttk.Style()
         style.configure("Horizontal.TScale", background="black")
@@ -128,17 +137,18 @@ class Grafica(Frame):
         self.combobox_port.pack(pady=0, expand=1)
         self.combobox_port.current(0)
 
-        Label(frame1, text='Baudrates', font=('Arial', 12, 'bold'), bg='black', fg='white').pack(pady=0, expand=1)
+        Label(frame1, text='Baudios', font=('Arial', 12, 'bold'), bg='black', fg='white').pack(pady=0, expand=1)
         self.combobox_baud = ttk.Combobox(frame1, values=baud, justify='center', width=12, font='Arial')
         self.combobox_baud.pack(padx=20, expand=1)
         self.combobox_baud.current(3)
 
-        self.bt_conectar = Button(frame1, text='Conectar', font=('Arial',12,'bold'), width=12, bg='green2', command=self.conectar_serial)
+        self.bt_conectar = Button(frame1, text='Conectar', font=('Arial',12,'bold'), width=12, bg='green yellow', fg='white', command=self.conectar_serial)
         self.bt_conectar.pack(pady=5, expand=1)
 
-        self.bt_actualizar = Button(frame1, text='Actualizar', font=('Arial',12,'bold'), width=12, bg='magenta', command=self.actualizar_puertos)
+        self.bt_actualizar = Button(frame1, text='Actualizar', font=('Arial',12,'bold'), width=12, bg='DeepSkyBlue2', fg='white', command=self.actualizar_puertos)
+        self.bt_actualizar.pack(pady=5, expand=1)
 
-        self.bt_desconectar = Button(frame1, state='disabled', text='Desconectar', font=('Arial',12,'bold'), width=12, bg='red2', command=self.desconectar_serial)
+        self.bt_desconectar = Button(frame1, state='disabled', text='Desconectar', font=('Arial',12,'bold'), width=12, bg='maroon', fg='black', command=self.desconectar_serial)
         self.bt_desconectar.pack(pady=5, expand=1)
 
         Label(frame3, image=self.logo, bg='black').pack(pady=5, expand=1)
