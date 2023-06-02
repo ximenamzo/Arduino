@@ -26,9 +26,9 @@ boolean t1=false, t2=false, t3=false;
 
 const int btnSelPin = 2;
 const int btnMenuPin = 3;
-const int ledVerPin = 5;
-const int ledAmaPin = 6;
-const int ledRojoPin = 7;
+const int ledVerPin = 4;
+const int ledAmaPin = 5;
+const int ledRojoPin = 6;
 
 int btnMenuState = 0;
 int btnSelState = 0;
